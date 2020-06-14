@@ -11,7 +11,6 @@ OBJ = $(SRC:.c=.o)
 
 update:
 	cp config.def.h config.h
-	chmod 755 config.h
 
 all: options st
 
