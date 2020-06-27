@@ -120,8 +120,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period,     spawn,          SHCMD("sudo backlight 100") },
 	{ MODKEY|ShiftMask,             XK_comma,      spawn,          SHCMD("sudo backlight -10") },
 	{ MODKEY|ShiftMask,             XK_period,     spawn,          SHCMD("sudo backlight 10") },
-	{ MODKEY|ShiftMask|ControlMask, XK_comma,      spawn,          SHCMD("sudo backlight -1") },
-	{ MODKEY|ShiftMask|ControlMask, XK_period,     spawn,          SHCMD("sudo backlight 1") },
+	{ MODKEY|ControlMask,           XK_comma,      spawn,          SHCMD("sudo backlight -1") },
+	{ MODKEY|ControlMask,           XK_period,     spawn,          SHCMD("sudo backlight 1") },
 };
 
 /* button definitions */
