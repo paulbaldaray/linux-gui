@@ -1,1 +1,1 @@
-nnoremap <Esc>b :!sudo make install<CR>
+nnoremap <Esc>o :!sudo make install<CR>
