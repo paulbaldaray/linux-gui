@@ -19,13 +19,10 @@ options:
 
 ${OBJ}: config.h config.mk
 
-update:
-	cp config.def.h config.h
-
 config.h:
 	cp config.def.h $@
 
-dwm: update ${OBJ}
+dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 clean:

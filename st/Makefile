@@ -9,9 +9,6 @@ include config.mk
 SRC = st.c x.c
 OBJ = $(SRC:.c=.o)
 
-update:
-	cp config.def.h config.h
-
 all: options st
 
 options:
@@ -31,7 +28,7 @@ x.o: arg.h config.h st.h win.h
 
 $(OBJ): config.h config.mk
 
-st: update $(OBJ)
+st: $(OBJ)
 	$(CC) -o $@ $(OBJ) $(STLDFLAGS)
 
 clean:
