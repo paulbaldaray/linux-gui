@@ -1,6 +1,6 @@
-*.orig
-*.rej
-*.o
-dwm
-st
-surf
+*/*.orig
+*/*.rej
+*/*.o
+dwm/dwm
+st/st
+dwmblocks/dwmblocks
