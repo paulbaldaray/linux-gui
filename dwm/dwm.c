@@ -1811,11 +1811,13 @@ tile(Monitor *m)
 		if (i < m->nmaster) {
 			h = (m->wh - my) / (MIN(n, m->nmaster) - i) - gappx;
 			resize(c, m->wx + gappx, m->wy + my, mw - (2*c->bw) - gappx*(5-ns)/2, h - (2*c->bw), False);
-			my += HEIGHT(c) + gappx;
+			if (my + HEIGHT(c) + gappx < m->wh)
+				my += HEIGHT(c) + gappx;
 		} else {
 			h = (m->wh - ty) / (n - i) - gappx;
 			resize(c, m->wx + mw + gappx/ns, m->wy + ty, m->ww - mw - (2*c->bw) - gappx*(5-ns)/2, h - (2*c->bw), False);
-			ty += HEIGHT(c) + gappx;
+			if (ty + HEIGHT(c) + gappx < m->wh)
+				ty += HEIGHT(c) + gappx;
 		}
 }
 
