@@ -167,6 +167,7 @@ static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
 static Monitor *createmon(void);
+static void cycleview(const Arg *arg);
 static void destroynotify(XEvent *e);
 static void detach(Client *c);
 static void detachstack(Client *c);
@@ -2192,6 +2193,23 @@ view(const Arg *arg)
 	selmon->seltags ^= 1; /* toggle sel tagset */
 	if (arg->ui & TAGMASK)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
+	focus(NULL);
+	arrange(selmon);
+}
+
+void
+cycleview(const Arg *arg) {
+	unsigned int t = selmon->tagset[selmon->seltags];
+	for (;;) {
+		Client *c;
+		if ((t <<= 1) & (TAGMASK+1))
+			t = 1 & TAGMASK;
+		for (c = selmon->clients; c; c = c->next)
+			if (ISVISIBLEONTAG(c, t))
+				goto exit_cycle_view_for;
+	}
+	exit_cycle_view_for:;
+	selmon->tagset[selmon->seltags] = t;
 	focus(NULL);
 	arrange(selmon);
 }

@@ -1,0 +1,49 @@
+diff --git a/dwm/config.h b/dwm/config.h
+index f6806aa..53c65fc 100644
+--- a/dwm/config.h
++++ b/dwm/config.h
+@@ -84,7 +84,7 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_h,          setmfact,       {.f = -0.05} },
+ 	{ MODKEY,                       XK_l,          setmfact,       {.f = +0.05} },
+ 	{ MODKEY,                       XK_Return,     zoom,           {0} },
+-	{ MODKEY,                       XK_Tab,        view,           {0} },
++	{ MODKEY,                       XK_Tab,        cycleview,      {0} },
+ 	{ MODKEY,                       XK_c,          killclient,     {0} },
+ 	{ MODKEY,                       XK_space,      setlayout,      {0} },
+ 	{ MODKEY,                       XK_m,          togglefloating, {0} },
+diff --git a/dwm/dwm.c b/dwm/dwm.c
+index 903f7d1..26aec56 100644
+--- a/dwm/dwm.c
++++ b/dwm/dwm.c
+@@ -167,6 +167,7 @@ static void configure(Client *c);
+ static void configurenotify(XEvent *e);
+ static void configurerequest(XEvent *e);
+ static Monitor *createmon(void);
++static void cycleview(const Arg *arg);
+ static void destroynotify(XEvent *e);
+ static void detach(Client *c);
+ static void detachstack(Client *c);
+@@ -2196,6 +2197,23 @@ view(const Arg *arg)
+ 	arrange(selmon);
+ }
+ 
++void
++cycleview(const Arg *arg) {
++	unsigned int t = selmon->tagset[selmon->seltags];
++	for (;;) {
++		Client *c;
++		if ((t <<= 1) & (TAGMASK+1))
++			t = 1 & TAGMASK;
++		for (c = selmon->clients; c; c = c->next)
++			if (ISVISIBLEONTAG(c, t))
++				goto exit_cycle_view_for;
++	}
++	exit_cycle_view_for:;
++	selmon->tagset[selmon->seltags] = t;
++	focus(NULL);
++	arrange(selmon);
++}
++
+ pid_t
+ winpid(Window w)
+ {
