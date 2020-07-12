@@ -7,8 +7,8 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const int vertpad            = 5;       /* vertical padding of bar */
-static const int sidepad            = 10;       /* horizontal padding of bar */
+static const int vertpad            = 0;       /* vertical padding of bar */
+static const int sidepad            = 0;       /* horizontal padding of bar */
 static const char *fonts[]          = { "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
 static const char col_gray1[]       = "#151515";
@@ -79,17 +79,19 @@ static Key keys[] = {
 	{ MODKEY,                       XK_b,          togglebar,      {0} },
 	{ MODKEY,                       XK_j,          focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,          focusstack,     {.i = -1 } },
-	/* { MODKEY,                       XK_m,          incnmaster,     {.i = +1 } }, */
-	/* { MODKEY|ShiftMask,             XK_m,          incnmaster,     {.i = -1 } }, */
+	{ MODKEY,                       XK_n,          incnmaster,     {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_n,          incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,          setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,          setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return,     zoom,           {0} },
 	{ MODKEY,                       XK_Tab,        cycleview,      {0} },
+	{ MODKEY|ShiftMask,             XK_Tab,        cycleview,      {.i = 1} },
+	{ MODKEY|ControlMask,           XK_Tab,        reorganize,     {0} },
 	{ MODKEY,                       XK_c,          killclient,     {0} },
 	{ MODKEY,                       XK_space,      setlayout,      {0} },
 	{ MODKEY,                       XK_m,          togglefloating, {0} },
-	{ MODKEY,                       XK_0,          view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,          tag,            {.ui = ~0 } },
+	/* { MODKEY,                       XK_0,          view,           {.ui = ~0 } }, */
+	{ MODKEY,                       XK_0,          tag,            {.ui = ~0 } },
 	/* { MODKEY,                       XK_comma,      focusmon,       {.i = -1 } }, */
 	/* { MODKEY,                       XK_period,     focusmon,       {.i = +1 } }, */
 	/* { MODKEY|ShiftMask,             XK_comma,      tagmon,         {.i = -1 } }, */
@@ -115,6 +117,7 @@ static Key keys[] = {
 	/* { MODKEY,                       XK_ ,          spawn,          SHCMD("") }, */
 	{ MODKEY,                       XK_f,          spawn,          SHCMD("firefox") },
 	{ MODKEY|ShiftMask,             XK_f,          spawn,          SHCMD("firefox --private-window") },
+	{ MODKEY|ShiftMask,             XK_semicolon,  spawn,          SHCMD("book") },
 	{ MODKEY,                       XK_v,          spawn,          SHCMD("pavucontrol") },
 	{ MODKEY,                       XK_comma,      spawn,          SHCMD("sudo backlight -100") },
 	{ MODKEY,                       XK_period,     spawn,          SHCMD("sudo backlight 100") },

@@ -199,6 +199,7 @@ static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
+static void reorganize(const Arg *arg);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
@@ -741,6 +742,26 @@ createmon(void)
 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
 	return m;
+}
+
+void
+cycleview(const Arg *arg)
+{
+	unsigned int t = selmon->tagset[selmon->seltags];
+	for (;;) {
+		Client *c;
+		if (arg->i && (t >>= 1) == 0)
+			t = (TAGMASK+1) >> 1;
+		if (!arg->i && (t <<= 1) & (TAGMASK+1))
+			t = 1 & TAGMASK;
+		for (c = selmon->clients; c; c = c->next)
+			if (ISVISIBLEONTAG(c, t))
+				goto cycleview_endfor;
+	}
+	cycleview_endfor:;
+	selmon->tagset[selmon->seltags] = t;
+	focus(NULL);
+	arrange(selmon);
 }
 
 void
@@ -1362,6 +1383,39 @@ recttomon(int x, int y, int w, int h)
 	return r;
 }
 
+#include <strings.h>
+void
+reorganize(const Arg *arg) {
+	Client *c;
+	unsigned int tagdest[LENGTH(tags)], occ, unocc, i;
+
+	occ = 0;
+	for (c = selmon->clients; c; c = c->next)
+		occ |= (c->tags = (1 << (ffs(c->tags)-1)));
+
+	unocc = 0;
+	for (i = 0; i < LENGTH(tags); ++i) {
+		while (unocc < i && (occ & (1 << unocc)))
+			unocc++;
+		if (occ & (1 << i)) {
+			tagdest[i] = unocc;
+			occ &= ~(1 << i);
+			occ |= 1 << unocc;
+		}
+	}
+
+	for (c = selmon->clients; c; c = c->next)
+		c->tags = 1 << tagdest[ffs(c->tags)-1];
+
+	if (selmon->sel)
+		selmon->tagset[selmon->seltags] = selmon->sel->tags;
+
+	focus(NULL);
+	arrange(selmon);
+}
+
+
+
 void
 resize(Client *c, int x, int y, int w, int h, int interact)
 {
@@ -1467,7 +1521,8 @@ restack(Monitor *m)
 }
 
 void
-restart(const Arg *arg) {
+restart(const Arg *arg)
+{
 	FILE *fp = popen("which dwm", "r");
 	if (fp == NULL) return;
 	char dwm_path[1000] = "";
@@ -1777,7 +1832,10 @@ void
 tag(const Arg *arg)
 {
 	if (selmon->sel && arg->ui & TAGMASK) {
-		selmon->sel->tags = arg->ui & TAGMASK;
+		selmon->sel->tags =
+			(selmon->sel->tags == TAGMASK && (arg->ui & TAGMASK) == TAGMASK)
+			? selmon->tagset[selmon->seltags]
+			: arg->ui & TAGMASK;
 		focus(NULL);
 		arrange(selmon);
 	}
@@ -2193,23 +2251,6 @@ view(const Arg *arg)
 	selmon->seltags ^= 1; /* toggle sel tagset */
 	if (arg->ui & TAGMASK)
 		selmon->tagset[selmon->seltags] = arg->ui & TAGMASK;
-	focus(NULL);
-	arrange(selmon);
-}
-
-void
-cycleview(const Arg *arg) {
-	unsigned int t = selmon->tagset[selmon->seltags];
-	for (;;) {
-		Client *c;
-		if ((t <<= 1) & (TAGMASK+1))
-			t = 1 & TAGMASK;
-		for (c = selmon->clients; c; c = c->next)
-			if (ISVISIBLEONTAG(c, t))
-				goto exit_cycle_view_for;
-	}
-	exit_cycle_view_for:;
-	selmon->tagset[selmon->seltags] = t;
 	focus(NULL);
 	arrange(selmon);
 }
