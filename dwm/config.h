@@ -88,6 +88,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Tab,        cycleview,      {.i = 1} },
 	{ MODKEY|ControlMask,           XK_Tab,        reorganize,     {0} },
 	{ MODKEY,                       XK_c,          killclient,     {0} },
+	{ MODKEY|ShiftMask,             XK_c,          spawn,          SHCMD("xkill -id $(xdotool getactivewindow)") },
 	{ MODKEY,                       XK_space,      setlayout,      {0} },
 	{ MODKEY,                       XK_m,          togglefloating, {0} },
 	/* { MODKEY,                       XK_0,          view,           {.ui = ~0 } }, */

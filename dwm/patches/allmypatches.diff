@@ -1,18 +1,21 @@
 diff --git a/config.def.h b/config.def.h
-index 1c0b587..0ed5177 100644
+index 1c0b587..5efc51e 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -72,6 +72,9 @@ static Key keys[] = {
+@@ -72,7 +72,11 @@ static Key keys[] = {
  	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
  	{ MODKEY,                       XK_Return, zoom,           {0} },
  	{ MODKEY,                       XK_Tab,    view,           {0} },
+-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 +	{ MODKEY,                       XK_Tab,    cycleview,      {0} },
 +	{ MODKEY|ShiftMask,             XK_Tab,    cycleview,      {.i = 1} },
 +	{ MODKEY|ControlMask,           XK_Tab,    reorganize,     {0} },
- 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
++	{ MODKEY,                       XK_c,      killclient,     {0} },
++	{ MODKEY|ShiftMask,             XK_c,      spawn,          SHCMD("xkill -id $(xdotool getactivewindow)") },
  	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
  	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-@@ -94,6 +97,7 @@ static Key keys[] = {
+ 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+@@ -94,6 +98,7 @@ static Key keys[] = {
  	TAGKEYS(                        XK_8,                      7)
  	TAGKEYS(                        XK_9,                      8)
  	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
