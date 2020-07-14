@@ -164,7 +164,7 @@ static uint forcemousemod = ShiftMask;
 /*
  * Command used to query unicode glyphs.
  */
-char *iso14755_cmd = "dmenu -w \"$WINDOWID\" -p codepoint: </dev/null";
+char *iso14755_cmd = "dmenu -w \"$WINDOWID\" -p unicode: </dev/null";
 
 /*
  * Internal mouse shortcuts.
