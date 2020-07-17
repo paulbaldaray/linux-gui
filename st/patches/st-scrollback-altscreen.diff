@@ -1,0 +1,92 @@
+diff --git a/st/config.h b/st/config.h
+index 6e57db9..9c032c7 100644
+--- a/st/config.h
++++ b/st/config.h
+@@ -172,6 +172,8 @@ char *iso14755_cmd = "dmenu -w \"$WINDOWID\" -p unicode: </dev/null";
+  */
+ static MouseShortcut mshortcuts[] = {
+ 	/* mask                 button   function        argument       release */
++	{ XK_ANY_MOD,           Button4, kscrollup,      {.i = 2},      0, /* !alt */ -1 },
++	{ XK_ANY_MOD,           Button5, kscrolldown,    {.i = 2},      0, /* !alt */ -1 },
+ 	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
+ 	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
+ 	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+@@ -189,8 +191,10 @@ static Shortcut shortcuts[] = {
+ 	{ ControlMask,          XK_equal,       zoomreset,      {.f =  0} },
+ 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
+ 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
+-	{ TERMMOD,              XK_K,           kscrollup,      {.i = 10} },
+-	{ TERMMOD,              XK_J,           kscrolldown,    {.i = 10} },
++	{ TERMMOD,              XK_K,           kscrollup,      {.i = 10}, /* !alt */ -1  },
++	{ TERMMOD,              XK_J,           kscrolldown,    {.i = 10}, /* !alt */ -1  },
++	{ TERMMOD,              XK_K,           ttysend,        {.s = "\031"} },
++	{ TERMMOD,              XK_J,           ttysend,        {.s = "\005"} },
+ 	{ TERMMOD,              XK_T,           newterm,        {.i =  0} },
+ 	{ TERMMOD,              XK_I,           iso14755,       {.i =  0} },
+ };
+diff --git a/st/st.c b/st/st.c
+index da50aec..8304180 100644
+--- a/st/st.c
++++ b/st/st.c
+@@ -1059,6 +1059,11 @@ tnew(int col, int row)
+ 	treset();
+ }
+ 
++int tisaltscr(void)
++{
++	return IS_SET(MODE_ALTSCREEN);
++}
++
+ void
+ newterm(const Arg* a)
+ {
+diff --git a/st/st.h b/st/st.h
+index db490a2..7724005 100644
+--- a/st/st.h
++++ b/st/st.h
+@@ -91,6 +91,7 @@ void sendbreak(const Arg *);
+ void toggleprinter(const Arg *);
+ 
+ int tattrset(int);
++int tisaltscr(void);
+ void tnew(int, int);
+ void tresize(int, int);
+ void tsetdirtattr(int);
+diff --git a/st/x.c b/st/x.c
+index 6647861..676ec3a 100644
+--- a/st/x.c
++++ b/st/x.c
+@@ -26,6 +26,7 @@ typedef struct {
+ 	KeySym keysym;
+ 	void (*func)(const Arg *);
+ 	const Arg arg;
++	int  altscrn;  /* 0: don't care, -1: not alt screen, 1: alt screen */
+ } Shortcut;
+ 
+ typedef struct {
+@@ -34,6 +35,7 @@ typedef struct {
+ 	void (*func)(const Arg *);
+ 	const Arg arg;
+ 	uint  release;
++	int  altscrn;  /* 0: don't care, -1: not alt screen, 1: alt screen */
+ } MouseShortcut;
+ 
+ typedef struct {
+@@ -449,6 +451,7 @@ mouseaction(XEvent *e, uint release)
+ 	for (ms = mshortcuts; ms < mshortcuts + LEN(mshortcuts); ms++) {
+ 		if (ms->release == release &&
+ 		    ms->button == e->xbutton.button &&
++		    (!ms->altscrn || (ms->altscrn == (tisaltscr() ? 1 : -1))) &&
+ 		    (match(ms->mod, state) ||  /* exact or forced */
+ 		     match(ms->mod, state & ~forcemousemod))) {
+ 			ms->func(&(ms->arg));
+@@ -1823,7 +1826,8 @@ kpress(XEvent *ev)
+ 		len = XLookupString(e, buf, sizeof buf, &ksym, NULL);
+ 	/* 1. shortcuts */
+ 	for (bp = shortcuts; bp < shortcuts + LEN(shortcuts); bp++) {
+-		if (ksym == bp->keysym && match(bp->mod, e->state)) {
++		if ((!bp->altscrn || (bp->altscrn == (tisaltscr() ? 1 : -1))) &&
++				(ksym == bp->keysym && match(bp->mod, e->state))) {
+ 			bp->func(&(bp->arg));
+ 			return;
+ 		}

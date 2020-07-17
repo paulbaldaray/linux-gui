@@ -26,6 +26,7 @@ typedef struct {
 	KeySym keysym;
 	void (*func)(const Arg *);
 	const Arg arg;
+	int  altscrn;  /* 0: don't care, -1: not alt screen, 1: alt screen */
 } Shortcut;
 
 typedef struct {
@@ -1825,7 +1826,8 @@ kpress(XEvent *ev)
 		len = XLookupString(e, buf, sizeof buf, &ksym, NULL);
 	/* 1. shortcuts */
 	for (bp = shortcuts; bp < shortcuts + LEN(shortcuts); bp++) {
-		if (ksym == bp->keysym && match(bp->mod, e->state)) {
+		if ((!bp->altscrn || (bp->altscrn == (tisaltscr() ? 1 : -1))) &&
+				(ksym == bp->keysym && match(bp->mod, e->state))) {
 			bp->func(&(bp->arg));
 			return;
 		}

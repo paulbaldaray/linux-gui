@@ -191,8 +191,10 @@ static Shortcut shortcuts[] = {
 	{ ControlMask,          XK_equal,       zoomreset,      {.f =  0} },
 	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
 	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
-	{ TERMMOD,              XK_K,           kscrollup,      {.i = 10} },
-	{ TERMMOD,              XK_J,           kscrolldown,    {.i = 10} },
+	{ TERMMOD,              XK_K,           kscrollup,      {.i = 10}, /* !alt */ -1  },
+	{ TERMMOD,              XK_J,           kscrolldown,    {.i = 10}, /* !alt */ -1  },
+	{ TERMMOD,              XK_K,           ttysend,        {.s = "\031"} },
+	{ TERMMOD,              XK_J,           ttysend,        {.s = "\005"} },
 	{ TERMMOD,              XK_T,           newterm,        {.i =  0} },
 	{ TERMMOD,              XK_I,           iso14755,       {.i =  0} },
 };
