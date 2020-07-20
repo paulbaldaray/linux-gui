@@ -483,7 +483,6 @@ insert:
 		sel = curr = matches;
 		calcoffsets();
 		break;
-	case XK_ISO_Left_Tab:
 	case XK_Left:
 		if (cursor > 0 && (!sel || !sel->left || lines > 0)) {
 			cursor = nextrune(-1);
@@ -492,6 +491,7 @@ insert:
 		if (lines > 0)
 			return;
 		/* fallthrough */
+	case XK_ISO_Left_Tab:
 	case XK_Up:
 		if (sel && sel->left && (sel = sel->left)->right == curr) {
 			curr = prev;
@@ -520,7 +520,6 @@ insert:
 		if (sel)
 			sel->out = 1;
 		break;
-	case XK_Tab:
 	case XK_Right:
 		if (text[cursor] != '\0') {
 			cursor = nextrune(+1);
@@ -529,6 +528,7 @@ insert:
 		if (lines > 0)
 			return;
 		/* fallthrough */
+	case XK_Tab:
 	case XK_Down:
 		if (sel && sel->right && (sel = sel->right) == next) {
 			curr = next;
