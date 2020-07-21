@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
-static unsigned int gappx           = 14;       /* gap pixel between windows */
+static unsigned int gappx           = 10;       /* gap pixel between windows */
 static unsigned int gapalt          = 0;        /* alternate gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
@@ -52,9 +52,10 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "tiles",      tile },    /* first entry is default */
+	{ "tiled",      tile },    /* first entry is default */
 	{ "float",      NULL },    /* no layout function means floating behavior */
 	{ "monoc",      monocle },
+	{ NULL,       NULL },
 };
 
 /* key definitions */
@@ -91,7 +92,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_g,          changegaps,     {.i = -1} },
 	{ MODKEY,                       XK_c,          killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_c,          spawn,          SHCMD("xkill -id $(xdotool getactivewindow)") },
-	{ MODKEY,                       XK_space,      setlayout,      {0} },
+	{ MODKEY,                       XK_space,      cyclelayout,    {.i = +1 } },
 	{ MODKEY,                       XK_m,          togglefloating, {0} },
 	/* { MODKEY,                       XK_0,          view,           {.ui = ~0 } }, */
 	{ MODKEY,                       XK_0,          tag,            {.ui = ~0 } },
@@ -109,18 +110,15 @@ static Key keys[] = {
 	TAGKEYS(                        XK_8,                          7)
 	TAGKEYS(                        XK_9,                          8)
 	{ MODKEY|ShiftMask,             XK_q,          quit,           {0} },
-
-	/* self restart */
 	{ MODKEY|ShiftMask,             XK_r,          restart,        {0} },
-
-	/* fullscreen */
-	{ MODKEY,                       XK_z,      togglefullscr,      {0} },
+	{ MODKEY,                       XK_z,          togglefullscr,      {0} },
 
 	/* Application shortcuts */
 	/* { MODKEY,                       XK_ ,          spawn,          SHCMD("") }, */
 	{ MODKEY,                       XK_f,          spawn,          SHCMD("firefox") },
 	{ MODKEY|ShiftMask,             XK_f,          spawn,          SHCMD("firefox --private-window") },
 	{ MODKEY|ShiftMask,             XK_semicolon,  spawn,          SHCMD("book") },
+	{ MODKEY,                       XK_p,          spawn,          SHCMD("toggle_picom") },
 	{ MODKEY,                       XK_v,          spawn,          SHCMD("pavucontrol") },
 	{ MODKEY,                       XK_comma,      spawn,          SHCMD("sudo backlight -100") },
 	{ MODKEY,                       XK_period,     spawn,          SHCMD("sudo backlight 100") },
