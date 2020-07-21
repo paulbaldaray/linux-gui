@@ -118,7 +118,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_f,          spawn,          SHCMD("firefox") },
 	{ MODKEY|ShiftMask,             XK_f,          spawn,          SHCMD("firefox --private-window") },
 	{ MODKEY|ShiftMask,             XK_semicolon,  spawn,          SHCMD("book") },
-	{ MODKEY,                       XK_p,          spawn,          SHCMD("toggle_picom") },
+	{ MODKEY,                       XK_p,          spawn,          SHCMD("toggle picom") },
 	{ MODKEY,                       XK_v,          spawn,          SHCMD("pavucontrol") },
 	{ MODKEY,                       XK_comma,      spawn,          SHCMD("sudo backlight -100") },
 	{ MODKEY,                       XK_period,     spawn,          SHCMD("sudo backlight 100") },
