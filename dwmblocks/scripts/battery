@@ -1,2 +1,3 @@
 #!/bin/bash
-echo $(cat /sys/class/power_supply/BAT0/capacity)%
+bat=$(cat /sys/class/power_supply/BAT0/capacity)
+[ ! -z "$bat" ] && echo $bat% || echo -
