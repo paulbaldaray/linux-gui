@@ -1,0 +1,8 @@
+#!/bin/bash
+suckless_dir="/home/paul/suckless"
+programs="dmenu dwm dwmblocks st"
+for p in $programs; do
+	echo "MAKING $p"
+	cd $suckless_dir/$p
+	make "$@" > /dev/null && echo 'SUCCESS' || echo 'FAILURE'
+done
