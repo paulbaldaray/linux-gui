@@ -2,8 +2,8 @@
 
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
-static unsigned int gappx           = 10;       /* gap pixel between windows */
-static unsigned int gapalt          = 0;        /* alternate gap pixel between windows */
+static unsigned int gappx           = 15;       /* gap pixel between windows */
+static const unsigned int gapmax    = 50;       /* max gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -89,7 +89,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Tab,        cycleview,      {0} },
 	{ MODKEY|ShiftMask,             XK_Tab,        cycleview,      {.i = 1} },
 	{ MODKEY|ControlMask,           XK_Tab,        reorganize,     {0} },
-	{ MODKEY,                       XK_g,          changegaps,     {.i = -1} },
+	{ MODKEY,                       XK_g,          changegaps,     {.i = 0} },
+	{ MODKEY|ShiftMask,             XK_g,          changegaps,     {.i = +5} },
+	{ MODKEY|ControlMask,           XK_g,          changegaps,     {.i = -5} },
 	{ MODKEY,                       XK_c,          killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_c,          spawn,          SHCMD("xkill -id $(xdotool getactivewindow)") },
 	{ MODKEY,                       XK_space,      cyclelayout,    {.i = +1 } },

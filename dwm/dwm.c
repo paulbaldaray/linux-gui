@@ -560,12 +560,14 @@ buttonpress(XEvent *e)
 void
 changegaps(const Arg *arg)
 {
-	if (arg->i == -1) {
-		unsigned int x = gappx;
-		gappx = gapalt;
-		gapalt = x;
+	static unsigned int gapsave = 0;
+	if (arg->i) {
+		if (0 < arg->i + gappx && arg->i + gappx <= gapmax)
+			gappx += arg->i;
 	} else {
-		gappx = arg->ui;
+		unsigned int t = gapsave;
+		gapsave = gappx;
+		gappx = t;
 	}
 	tile(selmon);
 }
