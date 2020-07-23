@@ -89,13 +89,13 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Tab,        cycleview,      {0} },
 	{ MODKEY|ShiftMask,             XK_Tab,        cycleview,      {.i = 1} },
 	{ MODKEY|ControlMask,           XK_Tab,        reorganize,     {0} },
-	{ MODKEY,                       XK_g,          changegaps,     {.i = 0} },
+	{ MODKEY|ControlMask,           XK_g,          changegaps,     {.i = 0} },
+	{ MODKEY,                       XK_g,          changegaps,     {.i = -5} },
 	{ MODKEY|ShiftMask,             XK_g,          changegaps,     {.i = +5} },
-	{ MODKEY|ControlMask,           XK_g,          changegaps,     {.i = -5} },
 	{ MODKEY,                       XK_c,          killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_c,          spawn,          SHCMD("xkill -id $(xdotool getactivewindow)") },
-	{ MODKEY,                       XK_space,      cyclelayout,    {.i = +1 } },
-	{ MODKEY,                       XK_m,          togglefloating, {0} },
+	{ MODKEY,                       XK_m,          cyclelayout,    {.i = +1 } },
+	/* { MODKEY,                       XK_m,          togglefloating, {0} }, */
 	/* { MODKEY,                       XK_0,          view,           {.ui = ~0 } }, */
 	{ MODKEY,                       XK_0,          tag,            {.ui = ~0 } },
 	/* { MODKEY,                       XK_comma,      focusmon,       {.i = -1 } }, */

@@ -569,7 +569,7 @@ changegaps(const Arg *arg)
 	} else {
 		gappx = gapsave;
 	}
-	tile(selmon);
+	arrange(selmon);
 }
 
 void
