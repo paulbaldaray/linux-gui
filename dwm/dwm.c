@@ -564,10 +564,10 @@ changegaps(const Arg *arg)
 	if (arg->i) {
 		if (0 < arg->i + gappx && arg->i + gappx <= gapmax)
 			gappx += arg->i;
+	} else if (gappx) {
+		gapsave = gappx, gappx = 0;
 	} else {
-		unsigned int t = gapsave;
-		gapsave = gappx;
-		gappx = t;
+		gappx = gapsave;
 	}
 	tile(selmon);
 }
