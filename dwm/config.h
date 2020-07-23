@@ -117,6 +117,7 @@ static Key keys[] = {
 
 	/* Application shortcuts */
 	/* { MODKEY,                       XK_ ,          spawn,          SHCMD("") }, */
+	{ MODKEY,                       XK_s,          spawn,          SHCMD("screenshot") },
 	{ MODKEY,                       XK_f,          spawn,          SHCMD("firefox") },
 	{ MODKEY|ShiftMask,             XK_f,          spawn,          SHCMD("firefox --private-window") },
 	{ MODKEY|ShiftMask,             XK_semicolon,  spawn,          SHCMD("book") },
