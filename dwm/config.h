@@ -85,7 +85,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return,     zoom,           {0} },
 	{ MODKEY,                       XK_Tab,        cycleview,      {0} },
 	{ MODKEY|ShiftMask,             XK_Tab,        cycleview,      {.i = 1} },
-	{ MODKEY|ControlMask,           XK_Tab,        reorganize,     {0} },
+	{ MODKEY,                       XK_r,          reorganizetags,     {0} },
 	{ MODKEY|ControlMask,           XK_g,          changegaps,     {.i = 0} },
 	{ MODKEY,                       XK_g,          changegaps,     {.i = -5} },
 	{ MODKEY|ShiftMask,             XK_g,          changegaps,     {.i = +5} },

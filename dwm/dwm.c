@@ -1,5 +1,5 @@
 /* See LICENSE file for copyright and license details.
- *
+*
  * dynamic window manager is designed like any other X client as well. It is
  * driven through handling X events. In contrast to other X clients, a window
  * manager selects for SubstructureRedirectMask on the root window, to receive
@@ -195,7 +195,7 @@ static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
-static void reorganize(const Arg *arg);
+static void reorganizetags(const Arg *arg);
 static void resize(Client *c, int x, int y, int w, int h, int interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
 static void resizemouse(const Arg *arg);
@@ -1337,16 +1337,15 @@ recttomon(int x, int y, int w, int h)
 	return r;
 }
 
-#include <strings.h>
 void
-reorganize(const Arg *arg) {
+reorganizetags(const Arg *arg) {
 	Client *c;
-	unsigned int tagdest[LENGTH(tags)], occ, unocc, i;
+	unsigned int occ, unocc, i;
+	unsigned int tagdest[LENGTH(tags)];
 
 	occ = 0;
 	for (c = selmon->clients; c; c = c->next)
-		occ |= (c->tags = (1 << (ffs(c->tags)-1)));
-
+		occ |= (1 << (ffs(c->tags)-1));
 	unocc = 0;
 	for (i = 0; i < LENGTH(tags); ++i) {
 		while (unocc < i && (occ & (1 << unocc)))
@@ -1360,11 +1359,8 @@ reorganize(const Arg *arg) {
 
 	for (c = selmon->clients; c; c = c->next)
 		c->tags = 1 << tagdest[ffs(c->tags)-1];
-
 	if (selmon->sel)
 		selmon->tagset[selmon->seltags] = selmon->sel->tags;
-
-	focus(NULL);
 	arrange(selmon);
 }
 
