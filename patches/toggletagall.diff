@@ -1,0 +1,30 @@
+diff --git a/config.def.h b/config.def.h
+index 1c0b587..fd3c535 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -94,6 +94,9 @@ static Key keys[] = {
+ 	TAGKEYS(                        XK_8,                      7)
+ 	TAGKEYS(                        XK_9,                      8)
+ 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
++
++	/* toggletagall patch */
++	{ MODKEY,                       XK_n,      tag,            {.ui = ~0 } },
+ };
+ 
+ /* button definitions */
+diff --git a/dwm.c b/dwm.c
+index 4465af1..187e15b 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -1656,7 +1656,10 @@ void
+ tag(const Arg *arg)
+ {
+ 	if (selmon->sel && arg->ui & TAGMASK) {
+-		selmon->sel->tags = arg->ui & TAGMASK;
++		selmon->sel->tags =
++			(selmon->sel->tags == TAGMASK && (arg->ui & TAGMASK) == TAGMASK)
++			? selmon->tagset[selmon->seltags]
++			: arg->ui & TAGMASK;
+ 		focus(NULL);
+ 		arrange(selmon);
+ 	}

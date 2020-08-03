@@ -1,0 +1,48 @@
+diff --git a/config.def.h b/config.def.h
+index 1c0b587..f8f21df 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -94,6 +94,7 @@ static Key keys[] = {
+ 	TAGKEYS(                        XK_8,                      7)
+ 	TAGKEYS(                        XK_9,                      8)
+ 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
++	{ MODKEY|ShiftMask,             XK_r,      restart,        {0} },
+ };
+ 
+ /* button definitions */
+diff --git a/dwm.c b/dwm.c
+index 4465af1..daadaef 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -192,6 +192,7 @@ static void resize(Client *c, int x, int y, int w, int h, int interact);
+ static void resizeclient(Client *c, int x, int y, int w, int h);
+ static void resizemouse(const Arg *arg);
+ static void restack(Monitor *m);
++static void restart(const Arg *arg);
+ static void run(void);
+ static void scan(void);
+ static int sendevent(Client *c, Atom proto);
+@@ -1369,6 +1370,23 @@ restack(Monitor *m)
+ 	while (XCheckMaskEvent(dpy, EnterWindowMask, &ev));
+ }
+ 
++void
++restart(const Arg *arg)
++{
++	int len;
++	char dwm_path[1000] = "";
++	char *argv[] = {dwm_path, NULL};
++	FILE *fp = popen("which dwm", "r");
++	if (fp == NULL)
++		return;
++	fgets(dwm_path, sizeof(dwm_path), fp);
++	if (pclose(fp) || (len = strlen(dwm_path)) == 0)
++		return;
++	if (dwm_path[len-1] == '\n')
++		dwm_path[len-1] = '\0';
++    execv(argv[0], argv);
++}
++
+ void
+ run(void)
+ {

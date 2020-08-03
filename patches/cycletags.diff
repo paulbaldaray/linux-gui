@@ -1,0 +1,53 @@
+diff --git a/config.def.h b/config.def.h
+index 1c0b587..36cc1af 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -94,6 +94,8 @@ static Key keys[] = {
+ 	TAGKEYS(                        XK_8,                      7)
+ 	TAGKEYS(                        XK_9,                      8)
+ 	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
++	{ MODKEY,                       XK_Tab,    cycletags,      {0} },
++	{ MODKEY|ShiftMask,             XK_Tab,    cycletags,      {.i = 1} },
+ };
+ 
+ /* button definitions */
+diff --git a/dwm.c b/dwm.c
+index 4465af1..2d9c40e 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -157,6 +157,7 @@ static void configure(Client *c);
+ static void configurenotify(XEvent *e);
+ static void configurerequest(XEvent *e);
+ static Monitor *createmon(void);
++static void cycletags(const Arg *arg);
+ static void destroynotify(XEvent *e);
+ static void detach(Client *c);
+ static void detachstack(Client *c);
+@@ -644,6 +645,27 @@ createmon(void)
+ 	return m;
+ }
+ 
++void
++cycletags(const Arg *arg)
++{
++	unsigned int t = selmon->tagset[selmon->seltags];
++	for (;;) {
++		Client *c;
++		if (arg->i && (t >>= 1) == 0)
++			t = (TAGMASK+1) >> 1;
++		if (!arg->i && (t <<= 1) & (TAGMASK+1))
++			t = 1 & TAGMASK;
++		for (c = selmon->clients; c; c = c->next)
++			if ((c->tags & t))
++				goto cycletags_endfor;
++	}
++	cycletags_endfor:;
++	selmon->tagset[selmon->seltags] = t;
++	focus(NULL);
++	arrange(selmon);
++}
++
++
+ void
+ destroynotify(XEvent *e)
+ {
