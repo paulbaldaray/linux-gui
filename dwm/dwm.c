@@ -1473,15 +1473,17 @@ restack(Monitor *m)
 void
 restart(const Arg *arg)
 {
-	FILE *fp = popen("which dwm", "r");
-	if (fp == NULL) return;
+	int len;
 	char dwm_path[1000] = "";
+	char *argv[] = {dwm_path, NULL};
+	FILE *fp = popen("which dwm", "r");
+	if (fp == NULL)
+		return;
 	fgets(dwm_path, sizeof(dwm_path), fp);
-	pclose(fp);
-	int len = strlen(dwm_path);
-	if (len == 0) return;
-	if (dwm_path[len-1] == '\n') dwm_path[len-1] = '\0';
-    char *const argv[] = {dwm_path, NULL};
+	if (pclose(fp) || (len = strlen(dwm_path)) == 0)
+		return;
+	if (dwm_path[len-1] == '\n')
+		dwm_path[len-1] = '\0';
     execv(argv[0], argv);
 }
 
