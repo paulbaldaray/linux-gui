@@ -120,12 +120,12 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_semicolon,  spawn,          SHCMD("book") },
 	{ MODKEY,                       XK_p,          spawn,          SHCMD("toggle picom") },
 	{ MODKEY,                       XK_v,          spawn,          SHCMD("pavucontrol") },
-	{ MODKEY,                       XK_comma,      spawn,          SHCMD("sudo backlight -100") },
-	{ MODKEY,                       XK_period,     spawn,          SHCMD("sudo backlight 100") },
-	{ MODKEY|ShiftMask,             XK_comma,      spawn,          SHCMD("sudo backlight -10") },
-	{ MODKEY|ShiftMask,             XK_period,     spawn,          SHCMD("sudo backlight 10") },
-	{ MODKEY|ControlMask,           XK_comma,      spawn,          SHCMD("sudo backlight -1") },
-	{ MODKEY|ControlMask,           XK_period,     spawn,          SHCMD("sudo backlight 1") },
+	{ MODKEY,                       XK_comma,      spawn,          SHCMD("sudo brightness -100") },
+	{ MODKEY,                       XK_period,     spawn,          SHCMD("sudo brightness 100") },
+	{ MODKEY|ShiftMask,             XK_comma,      spawn,          SHCMD("sudo brightness -10") },
+	{ MODKEY|ShiftMask,             XK_period,     spawn,          SHCMD("sudo brightness 10") },
+	{ MODKEY|ControlMask,           XK_comma,      spawn,          SHCMD("sudo brightness -1") },
+	{ MODKEY|ControlMask,           XK_period,     spawn,          SHCMD("sudo brightness 1") },
 };
 
 /* button definitions */
