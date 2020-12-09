@@ -126,6 +126,10 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period,     spawn,          SHCMD("sudo brightness 10") },
 	{ MODKEY|ControlMask,           XK_comma,      spawn,          SHCMD("sudo brightness -1") },
 	{ MODKEY|ControlMask,           XK_period,     spawn,          SHCMD("sudo brightness 1") },
+	{ MODKEY,                       XK_F1, spawn,        SHCMD("pamixer -t")},
+	{ MODKEY,                       XK_F2, spawn,        SHCMD("pamixer -d 1")},
+	{ MODKEY,                       XK_F3, spawn,        SHCMD("pamixer -i 1")},
+	{ MODKEY,                       XK_F4, spawn,        SHCMD("pamixer --default-source -t")},
 };
 
 /* button definitions */
