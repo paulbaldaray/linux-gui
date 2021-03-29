@@ -92,7 +92,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_c,          killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_c,          spawn,          SHCMD("xkill -id $(xdotool getactivewindow)") },
 	{ MODKEY,                       XK_space,      cyclelayout,    {.i = +1 } },
-	{ MODKEY,                       XK_m,          togglefloating, {0} },
+	{ MODKEY,                       XK_x,          togglefloating, {0} },
 	/* { MODKEY,                       XK_0,          view,           {.ui = ~0 } }, */
 	{ MODKEY,                       XK_0,          tag,            {.ui = ~0 } },
 	/* { MODKEY,                       XK_comma,      focusmon,       {.i = -1 } }, */
@@ -130,6 +130,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F2, spawn,        SHCMD("pamixer -d 1")},
 	{ MODKEY,                       XK_F3, spawn,        SHCMD("pamixer -i 1")},
 	{ MODKEY,                       XK_F4, spawn,        SHCMD("pamixer --default-source -t")},
+	{ MODKEY,             XK_Alt_R,     spawn,          SHCMD("micplayback") },
+	{ MODKEY,             XK_a,     spawn,          SHCMD("airpods") },
+	{ MODKEY,             XK_m,     spawn,          SHCMD("mute") },
 };
 
 /* button definitions */
