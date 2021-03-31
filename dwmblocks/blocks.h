@@ -1,6 +1,6 @@
 //Modify this file to change what commands output to your statusbar, and recompile using the make command.
 
-#define SCRIPT "/home/paul/suckless/dwmblocks/scripts/"
+#define SCRIPT "/home/paul/linux-gui/dwmblocks/scripts/"
 
 static const Block blocks[] = {
 	/*Icon | Command                    | Interval | Signal*/
