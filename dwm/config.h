@@ -22,6 +22,7 @@ static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray4, col_gray2, col_gray2 },
 	[SchemeSel]  = { col_gray4, col_gray1,  col_gray3 },
+	[SchemeHid]  = { col_gray3,  col_gray1, col_gray3 },
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -76,8 +77,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_semicolon,  spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_t,          spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,          togglebar,      {0} },
-	{ MODKEY,                       XK_j,          focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,          focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_j,      focusstackvis,  {.i = +1 } },
+	{ MODKEY,                       XK_k,      focusstackvis,  {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_j,      focusstackhid,  {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      focusstackhid,  {.i = -1 } },
 	/* { MODKEY,                       XK_n,          incnmaster,     {.i = +1 } }, */
 	/* { MODKEY|ShiftMask,             XK_n,          incnmaster,     {.i = -1 } }, */
 	{ MODKEY,                       XK_h,          setmfact,       {.f = -0.05} },
@@ -112,6 +115,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_r,          restart,        {0} },
 	{ MODKEY,                       XK_z,          togglefullscr,      {0} },
 
+	{ MODKEY|ShiftMask,             XK_n,      show,           {0} },
+	{ MODKEY,                       XK_n,      hide,           {0} },
+
 	/* Application shortcuts */
 	/* { MODKEY,                       XK_ ,          spawn,          SHCMD("") }, */
 	{ MODKEY,                       XK_s,          spawn,          SHCMD("screenshot") },
@@ -129,7 +135,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_F1, spawn,        SHCMD("pamixer -t")},
 	{ MODKEY,                       XK_F2, spawn,        SHCMD("pamixer -d 1")},
 	{ MODKEY,                       XK_F3, spawn,        SHCMD("pamixer -i 1")},
-	{ MODKEY,                       XK_F4, spawn,        SHCMD("pamixer --default-source -t")},
+	{ MODKEY,                       XK_F4, spawn,        SHCMD("mute")},
 	{ MODKEY,             XK_Alt_R,     spawn,          SHCMD("micplayback") },
 	{ MODKEY,             XK_a,     spawn,          SHCMD("airpods") },
 	{ MODKEY,             XK_m,     spawn,          SHCMD("mute") },
@@ -148,4 +154,5 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkWinTitle,          0,              Button1,        togglewin,      {0} },
 };

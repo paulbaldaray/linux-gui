@@ -1,3 +1,12 @@
 #!/bin/bash
 bat=$(cat /sys/class/power_supply/BAT0/capacity)
-[ ! -z "$bat" ] && echo $bat% || echo -
+stat=$(cat /sys/class/power_supply/BAT0/status)
+if [[ -z "$bat" ]]; then
+    echo 'BATTERY NOT FOUND'
+elif [[ "$stat" = 'Charging' ]]; then
+    echo ${bat}% Charging
+elif [[ "$bat" -le 10 ]]; then
+    echo ${bat}% LOW!!!
+else
+    echo ${bat}% Battery
+fi
