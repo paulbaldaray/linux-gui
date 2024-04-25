@@ -1,2 +1,3 @@
 #!/bin/bash
-date +'%a %b %d %r'
+date +'%-m/%-d|%-I:%M%p'
+# date +'%a %b %d %r'

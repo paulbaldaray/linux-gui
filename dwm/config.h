@@ -1,8 +1,9 @@
+#include <X11/XF86keysym.h>
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
 static const unsigned int borderpx  = 4;        /* border pixel of windows */
-static unsigned int gappx           = 0;       /* gap pixel between windows */
+static unsigned int gappx           = 25;       /* gap pixel between windows */
 static const unsigned int gapmax    = 50;       /* max gap pixel between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -15,7 +16,8 @@ static const char col_gray1[]       = "#151515";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#888888";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+/* static const char col_cyan[]        = "#005577"; */
+static const char col_cyan[]        = "#422A38";
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
@@ -71,6 +73,12 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *mutecmd[] = { "amixer", "-q", "set", "Master", "toggle", NULL };
+static const char *volupcmd[] = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
+static const char *voldowncmd[] = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
+static const char *miccmd[] = { "amixer", "set", "Capture", "toggle", NULL };
+static const char *brupcmd[] = { "brightnessctl", "s", "5%+", NULL };
+static const char *brdowncmd[] = { "brightnessctl", "s", "5%-", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -120,25 +128,17 @@ static Key keys[] = {
 
 	/* Application shortcuts */
 	/* { MODKEY,                       XK_ ,          spawn,          SHCMD("") }, */
+	{ MODKEY|ShiftMask,             XK_l,          spawn,          SHCMD("slock") },
 	{ MODKEY,                       XK_s,          spawn,          SHCMD("screenshot") },
-	{ MODKEY,                       XK_f,          spawn,          SHCMD("firefox") },
-	{ MODKEY|ShiftMask,             XK_f,          spawn,          SHCMD("firefox --private-window") },
-	{ MODKEY|ShiftMask,             XK_semicolon,  spawn,          SHCMD("book") },
 	{ MODKEY,                       XK_p,          spawn,          SHCMD("toggle picom") },
-	{ MODKEY,                       XK_v,          spawn,          SHCMD("pavucontrol") },
-	{ MODKEY,                       XK_comma,      spawn,          SHCMD("sudo brightness -100") },
-	{ MODKEY,                       XK_period,     spawn,          SHCMD("sudo brightness 100") },
-	{ MODKEY|ShiftMask,             XK_comma,      spawn,          SHCMD("sudo brightness -10") },
-	{ MODKEY|ShiftMask,             XK_period,     spawn,          SHCMD("sudo brightness 10") },
-	{ MODKEY|ControlMask,           XK_comma,      spawn,          SHCMD("sudo brightness -1") },
-	{ MODKEY|ControlMask,           XK_period,     spawn,          SHCMD("sudo brightness 1") },
-	{ MODKEY,                       XK_F1, spawn,        SHCMD("pamixer -t")},
-	{ MODKEY,                       XK_F2, spawn,        SHCMD("pamixer -d 1")},
-	{ MODKEY,                       XK_F3, spawn,        SHCMD("pamixer -i 1")},
-	{ MODKEY,                       XK_F4, spawn,        SHCMD("mute")},
-	{ MODKEY,             XK_Alt_R,     spawn,          SHCMD("micplayback") },
-	{ MODKEY,             XK_a,     spawn,          SHCMD("airpods") },
-	{ MODKEY,             XK_m,     spawn,          SHCMD("mute") },
+	{ MODKEY,                       XK_f,          spawn,          SHCMD("google-chrome") },
+	{ MODKEY|ShiftMask,             XK_f,          spawn,          SHCMD("firefox") },
+	{ 0,                       XF86XK_AudioMute,          spawn,          {.v = mutecmd} },
+	{ 0,                       XF86XK_AudioLowerVolume,          spawn,          {.v = voldowncmd} },
+	{ 0,                       XF86XK_AudioRaiseVolume,          spawn,          {.v = volupcmd} },
+	{ 0,                       XF86XK_AudioMicMute,          spawn,          {.v = miccmd} },
+	{ 0,                       XF86XK_MonBrightnessUp,          spawn,          {.v = brupcmd} },
+	{ 0,                       XF86XK_MonBrightnessDown,          spawn,          {.v = brdowncmd} },
 };
 
 /* button definitions */

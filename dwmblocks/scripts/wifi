@@ -1,6 +1,6 @@
 #!/bin/bash
 if [[ ! -z "$(ip route show)" ]]; then
-    echo "WIFI ON"
+    echo "WIFI"
 else
-    echo "WIFI OFF"
+    echo "...."
 fi

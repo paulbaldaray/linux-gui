@@ -4,9 +4,9 @@ stat=$(cat /sys/class/power_supply/BAT0/status)
 if [[ -z "$bat" ]]; then
     echo 'BATTERY NOT FOUND'
 elif [[ "$stat" = 'Charging' ]]; then
-    echo ${bat}% Charging
+    echo ${bat}Z
 elif [[ "$bat" -le 10 ]]; then
-    echo ${bat}% LOW!!!
+    echo ${bat}!
 else
-    echo ${bat}% Battery
+    echo ${bat}%
 fi
